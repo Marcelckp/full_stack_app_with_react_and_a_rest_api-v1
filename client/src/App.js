@@ -1,5 +1,4 @@
-import React, { useEffect, useState } from 'react'
-import axios from 'axios';
+import React from 'react';
 import { BrowserRouter, Switch, Route } from 'react-router-dom';
 
 //Components
@@ -10,34 +9,24 @@ import SignIn from './components/SignIn';
 import SignUp from './components/SignUp';
 import CreateCourse from './components/Create-Course';
 import CourseDetails from './components/Course-Details';
-
+import CourseDelete from './components/Course-Delete';
+import CourseUpdate from './components/Course-Update';
+import Error from './components/Error'
 
 function App() {
-  const [api, setApi] = useState('');
-
-  useEffect(() => {
-    axios.get('http://localhost:5000/')
-      .then(res => {
-        const data = res.data;
-        setApi(data);
-      }).catch(err => {
-        console.log(err);
-      })
-  },[]);
-
-  console.log(api)
   return (
     <BrowserRouter>
       <div>
         <Header />
-        {/* <h1>Welcome</h1> */}
-        <p>{ api.message }</p>
         <Switch>
           <Route exact path='/' render={() => <Home />} />
           <Route path='/signup' render={() => <SignUp />} />
           <Route path='/signin' render={() => <SignIn />} />
           <Route path='/create-course' render={() => <CreateCourse />} />
-          <Route path='/course-details/:id' render={() => <CourseDetails />} />
+          <Route path='/course-details/:id' render={(props) => <CourseDetails {...props} />} />
+          <Route path='/course-update/:id' render={(props) => <CourseUpdate {...props} />} />
+          <Route path='/course-delete/:id' render={(props) => <CourseDelete {...props} />} />
+          <Route path='/error' component={Error}/>
           <Route component={NotFound} />
         </Switch>
       </div>

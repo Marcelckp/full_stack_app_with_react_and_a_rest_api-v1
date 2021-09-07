@@ -14,7 +14,7 @@ function SignUp() {
                 <label htmlFor="password">Password</label>
                 <input type="text" id='password' name='password' />
                 <button className='button' type='submit'>Sign Up</button>
-                <button className='button button-secondary'>Cancel</button>
+                <a href="/" className="button button-secondary">Cancel</a>
             </form>
             <p>Already have a user account? Click here to <a href='/signin'>sign in</a>!</p>
         </div>

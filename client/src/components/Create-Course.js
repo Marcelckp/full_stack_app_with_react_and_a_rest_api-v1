@@ -25,10 +25,8 @@ function CreateCourse() {
                         <textarea id="materialsNeeded" name='materialsNeeded' />
                     </div>
                 </div>
-                <button className="button">Create Course</button>
-                <button className="button button-secondary" alt='Cancel button'>
-                    <a href="/">Cancel</a>
-                </button>
+                <button className="button" type='submit'>Create Course</button>
+                <a href="/" className="button button-secondary">Cancel</a>
             </form>
         </div>
     )
