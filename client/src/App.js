@@ -9,6 +9,7 @@ import Home from './components/Home';
 import SignIn from './components/SignIn';
 import SignUp from './components/SignUp';
 import CreateCourse from './components/Create-Course';
+import CourseDetails from './components/Course-Details';
 
 
 function App() {
@@ -36,6 +37,7 @@ function App() {
           <Route path='/signup' render={() => <SignUp />} />
           <Route path='/signin' render={() => <SignIn />} />
           <Route path='/create-course' render={() => <CreateCourse />} />
+          <Route path='/course-details/:id' render={() => <CourseDetails />} />
           <Route component={NotFound} />
         </Switch>
       </div>

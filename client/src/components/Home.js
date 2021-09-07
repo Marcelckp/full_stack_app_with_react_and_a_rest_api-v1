@@ -21,7 +21,7 @@ function Home() {
         <div className='wrap main--grid'>
             {courses.map((course) => {
                 return (
-                    <a className='course--module course--link' href={`course-detail/:${course.id}`} key={course.id} >
+                    <a className='course--module course--link' href={`course-details/:${course.id}`} key={course.id} >
                         <h2 className='course--label'>Course</h2>
                         <h3 className='course--title'>{course.title}</h3>
                     </a>);
