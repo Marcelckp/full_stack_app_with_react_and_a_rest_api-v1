@@ -284,5 +284,6 @@ textarea:focus {
 }
 
 .materials-info {
-    font-size: 14px
+    font-size: 14px;
+    margin-bottom: 4px
 }

@@ -1,6 +1,8 @@
 import React from 'react';
 import { BrowserRouter, Switch, Route } from 'react-router-dom';
 
+import PrivateRoute from './PrivateRoute';
+
 //Components
 import Header from './components/Header';
 import NotFound from './components/NotFound';
@@ -22,10 +24,10 @@ function App() {
           <Route exact path='/' render={() => <Home />} />
           <Route path='/signup' render={() => <SignUp />} />
           <Route path='/signin' render={() => <SignIn />} />
-          <Route path='/create-course' render={() => <CreateCourse />} />
           <Route path='/course-details/:id' render={(props) => <CourseDetails {...props} />} />
-          <Route path='/course-update/:id' render={(props) => <CourseUpdate {...props} />} />
-          <Route path='/course-delete/:id' render={(props) => <CourseDelete {...props} />} />
+          <PrivateRoute path='/create-course' render={() => <CreateCourse />} />
+          <PrivateRoute path='/course-update/:id' render={(props) => <CourseUpdate {...props} />} />
+          <PrivateRoute path='/course-delete/:id' render={(props) => <CourseDelete {...props} />} />
           <Route path='/error' component={Error}/>
           <Route component={NotFound} />
         </Switch>
