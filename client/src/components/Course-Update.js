@@ -13,6 +13,10 @@ function CourseUpdate(props) {
     const courseId = props.match.params.id.slice(1);
     // console.log(courseId);
 
+    if (course) {
+        if (course === null) history.push('/notFound');
+    }
+
     // console.log(authenticatedUser.user.id, course.userId)
 
     useEffect(() => {
@@ -27,8 +31,6 @@ function CourseUpdate(props) {
                 history.push('/error')
             })
     },[authenticatedUser, courseId, history]);
-
-    if (course === null) history.push('/notFound');
 
     const updateCourse = (e) => {
         setCourse(prev => ({

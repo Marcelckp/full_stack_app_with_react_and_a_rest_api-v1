@@ -1,21 +1,31 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import { useHistory } from 'react-router-dom';
 
 function CourseDetails(props) {
+    let history = useHistory()
     const [course, setCourse] = useState([]);
     useEffect(() => {
         // console.log(props.match.params.id.slice(1))
         axios.get(`http://localhost:5000/api/courses/${props.match.params.id.slice(1)}`)
-            .then(res => {
-                const course = res.data;
-                setCourse(course.course)
+            .then(async(res) => {
+                const co = res.data;
+                if (!co) history.push('/notFound')
+
+                await setCourse(co.course)
+                // console.log(co)
             })
             .catch(err => {
-                console.log(err)
+                console.log(err);
+                history.push('/error')
             })
-    },[props.match.params.id])
+    },[props.match.params.id, history])
 
-    console.log(course)
+    // if (course === []) {
+    //     history.push('/notFound')
+    // }
+    
+    // console.log(course)
 
     const coursesSplit = `${course.materialsNeeded}`;
     const cS = coursesSplit.slice(1).split('*');
