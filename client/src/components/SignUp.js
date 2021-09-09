@@ -1,18 +1,76 @@
-import React from 'react'
+import React, { useState, useContext } from 'react';
+import { Context } from '../Context';
+import { useHistory, Redirect } from 'react-router-dom';
 
 function SignUp() {
+
+    let history = useHistory();
+    const { data, actions } = useContext(Context);
+
+    const [user, setUser] = useState({
+        firstName:'',
+        lastName:'',
+        emailAddress:'',
+        password:'',
+        errors:[]
+    });
+
+    const {emailAddress, password, firstName, lastName, errors} = user;
+
+    const updateVal = (e) => {
+        setUser(prevVal => ({
+            ...prevVal,
+            [e.target.name]: e.target.value
+        }))
+    }
+
+
+    const submit = (e) => {
+        const account = {firstName, lastName, emailAddress, password}
+        e.preventDefault();
+        console.log(account)
+        data.createUser(account)
+            .then(err => {
+                if (err.length > 0) {
+                    setUser({errors: err})
+                } else {
+                    actions.signIn(emailAddress, password)
+                        .then(() => history.goBack())
+                        console.log('Account Created')
+                }
+            })
+            .catch(error => {
+                console.log(error);
+                return <Redirect to='/error' />
+            })
+    }
+
     return (
         <div className='form--centered'>
             <h2>Sign Up</h2>
-            <form>
+
+            {
+                errors.length > 0 ?
+                <div className="validation--errors">
+                    <h3>Validation Errors</h3>
+                    <ul>
+                        {errors.map((err, i) => {
+                            return <li key={i}>{err}</li>
+                        })}
+                    </ul>
+                </div>  
+                : null  
+            }
+            
+            <form onSubmit={submit}>
                 <label htmlFor="firstName">First Name</label>
-                <input type="text" id='firstName' name='firstName' />
+                <input type="text" id='firstName' name='firstName' onChange={updateVal} />
                 <label htmlFor="lastName">Last Name</label>
-                <input type="text" id='lastName' name='lastName' />
+                <input type="text" id='lastName' name='lastName' onChange={updateVal} />
                 <label htmlFor="emailAddress">Email Address</label>
-                <input type="text" id='emailAddress' name='emailAddress' />
+                <input type="email" id='emailAddress' name='emailAddress' onChange={updateVal} />
                 <label htmlFor="password">Password</label>
-                <input type="text" id='password' name='password' />
+                <input type="password" id='password' name='password' onChange={updateVal} />
                 <button className='button' type='submit'>Sign Up</button>
                 <a href="/" className="button button-secondary">Cancel</a>
             </form>

@@ -13,21 +13,25 @@ import CreateCourse from './components/Create-Course';
 import CourseDetails from './components/Course-Details';
 import CourseDelete from './components/Course-Delete';
 import CourseUpdate from './components/Course-Update';
-import Error from './components/Error'
+import Error from './components/Error';
+import SignOut from './components/SignOut';
+import UnAuth from './components/UnAuth';
 
 function App() {
   return (
-    <BrowserRouter>
+    <BrowserRouter forceRefresh={true}>
       <div>
         <Header />
         <Switch>
           <Route exact path='/' render={() => <Home />} />
           <Route path='/signup' render={() => <SignUp />} />
           <Route path='/signin' render={() => <SignIn />} />
+          <Route path='/signout' component={SignOut}/>
+          <Route path='/unAuthorized' component={UnAuth}/>
           <Route path='/course-details/:id' render={(props) => <CourseDetails {...props} />} />
-          <PrivateRoute path='/create-course' render={() => <CreateCourse />} />
-          <PrivateRoute path='/course-update/:id' render={(props) => <CourseUpdate {...props} />} />
-          <PrivateRoute path='/course-delete/:id' render={(props) => <CourseDelete {...props} />} />
+          <PrivateRoute path='/create-course' component={CreateCourse} />
+          <PrivateRoute path='/course-update/:id' component={CourseUpdate} />
+          <PrivateRoute path='/course-delete/:id' component={CourseDelete} />
           <Route path='/error' component={Error}/>
           <Route component={NotFound} />
         </Switch>

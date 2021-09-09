@@ -2,28 +2,19 @@ import React, { useState, useContext } from 'react';
 import { Context } from '../Context';
 import { Redirect, useHistory } from 'react-router-dom'
 
-const CreateCourse = () =>{
+const CreateCourse = () => {
     let history = useHistory();
     let { data, authenticatedUser } = useContext(Context);
-    const [course, setCourse] = useState([]);
-    const [errors, setErrors] = useState([]);
 
-    const handleSubmit = async (e) => {
-        course.id = authenticatedUser.id;
-        data.createCourse(course, authenticatedUser.emailAddress, authenticatedUser.password)
-            .then( error => {
-                if (error.length) {
-                    setErrors(error)
-                    console.log(error)
-                } else {
-                    history.push('/')
-                }
-            })
-            .catch(error => {
-                console.log(error);
-                return <Redirect to='/error' />;
-            })
-    }
+    const [course, setCourse] = useState({
+        courseDescription: '',
+        estimatedTime: '',
+        courseTitle: '',
+        materialsNeeded: '',
+        errors: []
+    });
+
+    const { courseDescription, courseTitle, materialsNeeded, estimatedTime } = course
 
     const updateVal = (e) => {
         setCourse(prevValue => ({
@@ -31,26 +22,54 @@ const CreateCourse = () =>{
             [e.target.name]: e.target.value
         }))
     }
+
+    // console.log(course)
+    
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        const courseVal = {description: courseDescription, title: courseTitle, materialsNeeded, estimatedTime, userId: authenticatedUser.user.id};
+        
+        courseVal.userId = authenticatedUser.user.id;
+        
+        // console.log(courseVal, authenticatedUser.user.emailAddress, authenticatedUser.password)
+
+        data.createCourse(courseVal, authenticatedUser.user.emailAddress, authenticatedUser.password)
+            .then( error => {
+                if (error.length) {
+                    setCourse({errors: error});
+                    console.log(error);
+                } else {
+                    history.push('/');
+                    console.log('Course Created Successfully!');
+                }
+                console.log(courseVal);
+            })
+            .catch(error => {
+                console.log(error);
+                return <Redirect to='/error' />;
+            })
+    }
         
     return (
         <div className="wrap">
             <h2>Create Course</h2>
 
             {
-                errors.length 
+                course.errors.length > 0
                     ? 
                     <div className="validation--errors">
                         <h3>Validation Error</h3>
                         <ul>
-                            <li>Error</li>
+                            {course.errors.map((err, i) => {
+                                return <li key={i}>{err}</li>
+                            })}
                         </ul>
                     </div>
                     :
                     null
             }
 
-            <form
-                errors={course.errors}>
+            <form onSubmit={handleSubmit}>
                 <div className="main--flex">
                     <div>
                         <label htmlFor="courseTitle">Course Title</label>
@@ -66,7 +85,7 @@ const CreateCourse = () =>{
                         <textarea id="materialsNeeded" name='materialsNeeded' onChange={updateVal} />
                     </div>
                 </div>
-                <button className="button" type='submit' onClick={handleSubmit}>Create Course</button>
+                <button className="button" type='submit'>Create Course</button>
                 <a href="/" className="button button-secondary">Cancel</a>
             </form>
         </div>
