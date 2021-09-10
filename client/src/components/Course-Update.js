@@ -42,12 +42,12 @@ function CourseUpdate(props) {
 
     const { title, description, courseDescription, courseTitle, materialsNeeded, estimatedTime, errors } = course;
 
-    // console.log(courseTitle, courseDescription)
+    console.log(courseTitle, courseDescription)
 
     const handleUpdate = (e) => {
         e.preventDefault();
 
-        const courseValue = { description: courseDescription, title: courseTitle, materialsNeeded, estimatedTime };
+        const courseValue = { description: courseDescription || description, title: courseTitle || title, materialsNeeded, estimatedTime };
 
         courseValue.userId = authenticatedUser.user.id;
 
@@ -56,10 +56,10 @@ function CourseUpdate(props) {
                     if (err.length) {
                         setCourse({
                             errors: err,
-                            // courseTitle: '',
-                            // courseDescription: '',
-                            // materialsNeeded: '',
-                            // estimatedTime: ''
+                            title: courseTitle || title,
+                            description: courseDescription || description,
+                            materialsNeeded: materialsNeeded,
+                            estimatedTime: estimatedTime
                         });
                         console.log(err)
                     } else {

@@ -68,7 +68,7 @@ function CourseDetails(props) {
                                 {/* {course.materialsNeeded.map((mats) => {
                                     return <li></li>
                                 })} */}
-                                {   cS.length === 1 
+                                {   cS.length === 1
                                     ?
                                         <li>No Materials Needed</li>
                                     :
