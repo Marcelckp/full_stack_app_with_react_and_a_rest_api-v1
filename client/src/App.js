@@ -28,10 +28,10 @@ function App() {
           <Route path='/signin' render={() => <SignIn />} />
           <Route path='/signout' component={SignOut}/>
           <Route path='/unAuthorized' component={UnAuth}/>
-          <Route path='/course-details/:id' render={(props) => <CourseDetails {...props} />} />
-          <PrivateRoute path='/create-course' component={CreateCourse} />
-          <PrivateRoute path='/course-update/:id' component={CourseUpdate} />
-          <PrivateRoute path='/course-delete/:id' component={CourseDelete} />
+          <Route path='/courses/:id' render={(props) => <CourseDetails {...props} />} />
+          <PrivateRoute path='/course/create' component={CreateCourse} />
+          <PrivateRoute path='/course/:id/update' component={CourseUpdate} />
+          <PrivateRoute path='/course/:id/delete' component={CourseDelete} />
           <Route path='/error' component={Error}/>
           <Route component={NotFound} />
         </Switch>

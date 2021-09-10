@@ -38,8 +38,8 @@ function CourseDetails(props) {
         <>
             <div className="actions--bar">
                 <div className="wrap">
-                    <a href={`/course-update/:${props.match.params.id.slice(1)}`} className="button">Update Course</a>
-                    <a href={`/course-delete/:${props.match.params.id.slice(1)}`} className="button">Delete Course</a>
+                    <a href={`/course/:${props.match.params.id.slice(1)}/update`} className="button">Update Course</a>
+                    <a href={`/course/:${props.match.params.id.slice(1)}/delete`} className="button">Delete Course</a>
                     <a href="/" className="button button-secondary">Return to Home</a>
                 </div>
             </div>

@@ -18,10 +18,10 @@ const CourseDelete = (props) => {
 
     useEffect(() => {
         axios.get(`http://localhost:5000/api/courses/${courseId}`)
-            .then(res => {
+            .then(async(res) => {
                 const c = res.data;
-                setCourse(c.course)
-                if (authenticatedUser.user.id !== course.userId) history.push('/UnAuthorized')
+                await setCourse(c.course)
+                if (authenticatedUser.user.id !== c.course.userId) history.push('/UnAuthorized')
             })
             .catch(err => {
                 if (err.message === 'Request failed with status code 404') {
