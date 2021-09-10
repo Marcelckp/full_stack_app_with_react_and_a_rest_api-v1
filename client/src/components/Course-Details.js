@@ -5,19 +5,22 @@ import { useHistory } from 'react-router-dom';
 function CourseDetails(props) {
     let history = useHistory()
     const [course, setCourse] = useState([]);
+
     useEffect(() => {
         // console.log(props.match.params.id.slice(1))
         axios.get(`http://localhost:5000/api/courses/${props.match.params.id.slice(1)}`)
             .then(async(res) => {
                 const co = res.data;
-                if (!co) history.push('/notFound')
-
                 await setCourse(co.course)
                 // console.log(co)
             })
             .catch(err => {
-                console.log(err);
-                history.push('/error')
+                if (err.message === 'Request failed with status code 404') {
+                    history.push('/notFound');
+                } else {
+                    history.push('/error');
+                    console.log(err)
+                } 
             })
     },[props.match.params.id, history])
 

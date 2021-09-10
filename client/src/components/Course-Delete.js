@@ -12,16 +12,26 @@ const CourseDelete = (props) => {
 
     const { data, authenticatedUser } = useContext(Context)
 
+    // if (course) {
+    //     if (course === null) history.push('/notFound')
+    // }
+
     useEffect(() => {
         axios.get(`http://localhost:5000/api/courses/${courseId}`)
             .then(res => {
                 const c = res.data;
                 setCourse(c.course)
+                if (authenticatedUser.user.id !== course.userId) history.push('/UnAuthorized')
             })
             .catch(err => {
-                console.log(err)
+                if (err.message === 'Request failed with status code 404') {
+                    history.push('/notFound');
+                } else {
+                    history.push('/error');
+                    console.log(err)
+                } 
             })
-    }, [courseId])
+    }, [courseId, authenticatedUser.user.id, course.userId, history])
 
     // console.log(course) 
     // console.log(authenticatedUser)
@@ -32,14 +42,8 @@ const CourseDelete = (props) => {
         // console.log(course.userId) 
         // console.log(authenticatedUser.user.id)
 
-        if (course === null) history.push('/notFound')
-
-        else if (authenticatedUser.user.id !== course.userId) history.push('/UnAuthorized')
-
-        else {
             data.deleteCourse(courseId, authenticatedUser.user.emailAddress, authenticatedUser.password);
             history.push('/')
-        }
     }
 
     return (

@@ -1,6 +1,6 @@
 import React, { useState, useContext } from 'react';
 import { Context } from '../Context';
-import { Redirect, useHistory } from 'react-router-dom'
+import { useHistory } from 'react-router-dom'
 
 const CreateCourse = () => {
     let history = useHistory();
@@ -14,7 +14,7 @@ const CreateCourse = () => {
         errors: []
     });
 
-    const { courseDescription, courseTitle, materialsNeeded, estimatedTime } = course
+    const { courseDescription, courseTitle, materialsNeeded, estimatedTime, errors } = course
 
     const updateVal = (e) => {
         setCourse(prevValue => ({
@@ -36,7 +36,13 @@ const CreateCourse = () => {
         data.createCourse(courseVal, authenticatedUser.user.emailAddress, authenticatedUser.password)
             .then( error => {
                 if (error.length) {
-                    setCourse({errors: error});
+                    setCourse({
+                        errors: error,
+                        courseDescription: '',
+                        courseTitle: '',
+                        materialsNeeded: '',
+                        estimatedTime: ''
+                    });
                     console.log(error);
                 } else {
                     history.push('/');
@@ -46,7 +52,7 @@ const CreateCourse = () => {
             })
             .catch(error => {
                 console.log(error);
-                return <Redirect to='/error' />;
+                history.push('/error');
             })
     }
         
@@ -55,7 +61,7 @@ const CreateCourse = () => {
             <h2>Create Course</h2>
 
             {
-                course.errors.length > 0
+                errors.length > 0
                     ? 
                     <div className="validation--errors">
                         <h3>Validation Error</h3>
@@ -73,16 +79,16 @@ const CreateCourse = () => {
                 <div className="main--flex">
                     <div>
                         <label htmlFor="courseTitle">Course Title</label>
-                        <input type="text" id='courseTitle' name='courseTitle' onChange={updateVal} />
+                        <input type="text" id='courseTitle' name='courseTitle' onChange={updateVal} value={courseTitle} />
                         <label htmlFor="courseDescription">Course Description</label>
-                        <textarea id='courseDescription' name='courseDescription' onChange={updateVal} />
+                        <textarea id='courseDescription' name='courseDescription' onChange={updateVal} value={courseDescription} />
                     </div>
                     <div>
                         <label htmlFor="estimatedTime">Estimated Time</label>
-                        <input type="text" id="estimatedTime" name='estimatedTime' onChange={updateVal} />
+                        <input type="text" id="estimatedTime" name='estimatedTime' onChange={updateVal} value={estimatedTime} />
                         <label htmlFor="materialsNeeded">Materials Needed</label>
                         <p className='materials-info'>-Separate the different materials with *</p>
-                        <textarea id="materialsNeeded" name='materialsNeeded' onChange={updateVal} />
+                        <textarea id="materialsNeeded" name='materialsNeeded' onChange={updateVal} value={materialsNeeded} />
                     </div>
                 </div>
                 <button className="button" type='submit'>Create Course</button>

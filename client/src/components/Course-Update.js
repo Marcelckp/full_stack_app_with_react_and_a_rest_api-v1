@@ -13,10 +13,6 @@ function CourseUpdate(props) {
     const courseId = props.match.params.id.slice(1);
     // console.log(courseId);
 
-    if (course) {
-        if (course === null) history.push('/notFound');
-    }
-
     // console.log(authenticatedUser.user.id, course.userId)
 
     useEffect(() => {
@@ -27,10 +23,14 @@ function CourseUpdate(props) {
                 if (authenticatedUser.user.id !== c.course.userId) history.push('/unAuthorized');
             })
             .catch(err => {
-                console.log(err);
-                history.push('/error')
+                if (err.message === 'Request failed with status code 404') {
+                    history.push('/notFound');
+                } else {
+                    history.push('/error');
+                    console.log(err)
+                } 
             })
-    },[authenticatedUser, courseId, history]);
+    },[authenticatedUser.user.id, courseId, history, course.userId]);
 
     const updateCourse = (e) => {
         setCourse(prev => ({
@@ -40,14 +40,14 @@ function CourseUpdate(props) {
         // console.log(course);
     } 
 
-    const { description, title, materialsNeeded, estimatedTime, errors } = course;
+    const { title, description, courseDescription, courseTitle, materialsNeeded, estimatedTime, errors } = course;
 
-    console.log(course)
+    // console.log(courseTitle, courseDescription)
 
     const handleUpdate = (e) => {
         e.preventDefault();
 
-        const courseValue = { description, title, materialsNeeded, estimatedTime };
+        const courseValue = { description: courseDescription, title: courseTitle, materialsNeeded, estimatedTime };
 
         courseValue.userId = authenticatedUser.user.id;
 
