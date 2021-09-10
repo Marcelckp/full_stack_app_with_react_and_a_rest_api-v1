@@ -54,7 +54,13 @@ function CourseUpdate(props) {
             data.updateCourse(courseId, courseValue, authenticatedUser.user.emailAddress, authenticatedUser.password)
                 .then( err => {
                     if (err.length) {
-                        setCourse({errors: err});
+                        setCourse({
+                            errors: err,
+                            // courseTitle: '',
+                            // courseDescription: '',
+                            // materialsNeeded: '',
+                            // estimatedTime: ''
+                        });
                         console.log(err)
                     } else {
                         history.push('/')
