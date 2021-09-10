@@ -32,7 +32,11 @@ function SignIn(props) {
             .then((user) => {
                 console.log(user)
                 if (user === null) {
-                    setAccount({ errors: ['Sign-in was unsuccessful']})
+                    setAccount({ 
+                        errors: ['Sign-in was unsuccessful'],
+                        emailAddress: '',
+                        password: ''
+                    })
                 } else {
                     history.goBack();
                     console.log('You\'ve signed in successfully');
@@ -42,6 +46,7 @@ function SignIn(props) {
                 console.log(err);
                 return <Redirect to='/error' />
             })
+    
     }
 
     return (
@@ -54,9 +59,9 @@ function SignIn(props) {
             }
             <form onSubmit={submit}>
                 <label htmlFor="emailAddress">Email Address</label>
-                <input type="email" id="emailAddress" name="emailAddress" onChange={updateVal} />
+                <input type="email" id="emailAddress" name="emailAddress" onChange={updateVal} value={account.emailAddress} />
                 <label htmlFor="password">Password</label>
-                <input type="password" id="password" name="password" onChange={updateVal} />
+                <input type="password" id="password" name="password" onChange={updateVal} value={account.password} />
                 <button className="button" type='submit'>Sign In</button>
                 <a href="/" className="button button-secondary">Cancel</a>
             </form>

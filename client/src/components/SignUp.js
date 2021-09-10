@@ -32,7 +32,13 @@ function SignUp() {
         data.createUser(account)
             .then(err => {
                 if (err.length > 0) {
-                    setUser({errors: err})
+                    setUser({
+                        errors: err,
+                        firstName: '',
+                        lastName: '',
+                        emailAddress: '',
+                        password: '',
+                    })
                 } else {
                     actions.signIn(emailAddress, password)
                         .then(() => history.goBack())
@@ -64,13 +70,13 @@ function SignUp() {
             
             <form onSubmit={submit}>
                 <label htmlFor="firstName">First Name</label>
-                <input type="text" id='firstName' name='firstName' onChange={updateVal} />
+                <input type="text" id='firstName' name='firstName' onChange={updateVal} value={firstName} />
                 <label htmlFor="lastName">Last Name</label>
-                <input type="text" id='lastName' name='lastName' onChange={updateVal} />
+                <input type="text" id='lastName' name='lastName' onChange={updateVal} value={lastName} />
                 <label htmlFor="emailAddress">Email Address</label>
-                <input type="email" id='emailAddress' name='emailAddress' onChange={updateVal} />
+                <input type="email" id='emailAddress' name='emailAddress' onChange={updateVal} value={emailAddress} />
                 <label htmlFor="password">Password</label>
-                <input type="password" id='password' name='password' onChange={updateVal} />
+                <input type="password" id='password' name='password' onChange={updateVal} value={password} />
                 <button className='button' type='submit'>Sign Up</button>
                 <a href="/" className="button button-secondary">Cancel</a>
             </form>
