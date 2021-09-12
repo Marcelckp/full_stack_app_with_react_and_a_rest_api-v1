@@ -1,10 +1,14 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import axios from 'axios';
 import { useHistory } from 'react-router-dom';
+import { Context } from '../Context';
+
+import ReactMarkdown from 'react-markdown';
 
 function CourseDetails(props) {
     let history = useHistory()
     const [course, setCourse] = useState([]);
+    const { authenticatedUser } = useContext(Context)
 
     useEffect(() => {
         // console.log(props.match.params.id.slice(1))
@@ -24,22 +28,24 @@ function CourseDetails(props) {
             })
     },[props.match.params.id, history])
 
-    // if (course === []) {
-    //     history.push('/notFound')
-    // }
-    
+    // console.log(course.materialsNeeded)
     // console.log(course)
-
-    const coursesSplit = `${course.materialsNeeded}`;
-    const cS = coursesSplit.slice(1).split('*');
-    // console.log(cS)
 
     return ( 
         <>
             <div className="actions--bar">
                 <div className="wrap">
-                    <a href={`/course/:${props.match.params.id.slice(1)}/update`} className="button">Update Course</a>
-                    <a href={`/course/:${props.match.params.id.slice(1)}/delete`} className="button">Delete Course</a>
+                {
+                    authenticatedUser && authenticatedUser.user.id === course.userId
+                    ?
+                    <>
+                        <a href={`/course/:${props.match.params.id.slice(1)}/update`} className="button">Update Course</a>
+                        <a href={`/course/:${props.match.params.id.slice(1)}/delete`} className="button">Delete Course</a>
+                    </>
+                    : 
+                    null
+                }
+                    
                     <a href="/" className="button button-secondary">Return to Home</a>
                 </div>
             </div>
@@ -50,8 +56,8 @@ function CourseDetails(props) {
                         <div>
                             <h3 className='course--detail--title'>Course</h3>
                             <h4 className="course--name">{/*courseName*/}{course.title}</h4>
-                            {/* <p> courseDescription </p> */}
-                            <p>{course.description}</p>
+                            <p>{course.user ? `By ${course.user.firstName} ${course.user.lastName}` : null}</p>
+                            <ReactMarkdown>{course.description}</ReactMarkdown>
                         </div>
                         <div>
                             <h3 className="course--detail--title">Estimated Time</h3>
@@ -68,13 +74,13 @@ function CourseDetails(props) {
                                 {/* {course.materialsNeeded.map((mats) => {
                                     return <li></li>
                                 })} */}
-                                {   cS.length === 1
+                                {   
+                                    !course.materialsNeeded
                                     ?
                                         <li>No Materials Needed</li>
                                     :
-                                    cS.map((c, index) => {
-                                    return <li key={index}>{c}</li>
-                                })}
+                                    <ReactMarkdown>{course.materialsNeeded}</ReactMarkdown>
+                                }
                             </ul>
                         </div>
                     </div>

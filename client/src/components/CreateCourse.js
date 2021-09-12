@@ -87,7 +87,6 @@ const CreateCourse = () => {
                         <label htmlFor="estimatedTime">Estimated Time</label>
                         <input type="text" id="estimatedTime" name='estimatedTime' onChange={updateVal} value={estimatedTime} />
                         <label htmlFor="materialsNeeded">Materials Needed</label>
-                        <p className='materials-info'>-Separate the different materials with *</p>
                         <textarea id="materialsNeeded" name='materialsNeeded' onChange={updateVal} value={materialsNeeded} />
                     </div>
                 </div>

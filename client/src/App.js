@@ -6,16 +6,16 @@ import PrivateRoute from './PrivateRoute';
 //Components
 import Header from './components/Header';
 import NotFound from './components/NotFound';
-import Home from './components/Home';
-import SignIn from './components/SignIn';
-import SignUp from './components/SignUp';
-import CreateCourse from './components/Create-Course';
-import CourseDetails from './components/Course-Details';
-import CourseDelete from './components/Course-Delete';
-import CourseUpdate from './components/Course-Update';
-import Error from './components/Error';
-import SignOut from './components/SignOut';
-import UnAuth from './components/UnAuth';
+import Home from './components/Courses';
+import SignIn from './components/UserSignIn';
+import SignUp from './components/UserSignUp';
+import CreateCourse from './components/CreateCourse';
+import CourseDetails from './components/CourseDetail';
+import CourseDelete from './components/DeleteCourse';
+import CourseUpdate from './components/UpdateCourse';
+import Error from './components/UnhandledError';
+import SignOut from './components/UserSignOut';
+import UnAuth from './components/Forbidden';
 
 function App() {
   return (

@@ -17,7 +17,7 @@ export default class Data {
             const encodedCredentials = btoa(`${credentials.emailAddress}:${credentials.password}`);
             options.headers['Authorization'] = `Basic ${encodedCredentials}`
         }
-        console.log(options.headers)
+        // console.log(options.headers)
         return fetch(url, options);
     }
 
@@ -50,7 +50,7 @@ export default class Data {
         } else if (response.status === 400) {
             return response.json().then(data => {
                 return data.errors;
-            })
+            }).c
         } else {
             throw new Error()
         }
@@ -64,7 +64,7 @@ export default class Data {
         } else if (response.status === 400) {
             return response.json().then(data => {
                 return data.errors;
-            })
+            }).catch(err => console.log(err))
         } else {
             throw new Error()
         }

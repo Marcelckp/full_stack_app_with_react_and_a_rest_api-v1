@@ -8,18 +8,26 @@ function CourseUpdate(props) {
     let history = useHistory();
     let { data, authenticatedUser } = useContext(Context);
 
-    const [course, setCourse] = useState([]);
+    const [course, setCourse] = useState({
+        description: '',
+        estimatedTime: '',
+        title: '',
+        materialsNeeded: '',
+        errors: []
+    });
 
     const courseId = props.match.params.id.slice(1);
     // console.log(courseId);
 
     // console.log(authenticatedUser.user.id, course.userId)
 
+    const { title, description, materialsNeeded, estimatedTime, errors } = course;
+
     useEffect(() => {
         axios.get(`http://localhost:5000/api/courses/${courseId}`)
-            .then(async(res) => {
+            .then((res) => {
                 const c = res.data;
-                await setCourse(c.course)
+                setCourse(c.course)
                 if (authenticatedUser.user.id !== c.course.userId) history.push('/unAuthorized');
             })
             .catch(err => {
@@ -33,43 +41,48 @@ function CourseUpdate(props) {
     },[authenticatedUser.user.id, courseId, history, course.userId]);
 
     const updateCourse = (e) => {
-        setCourse(prev => ({
-            ...prev,
+        setCourse(prevValue => ({
+            ...prevValue,
             [e.target.name]: e.target.value
         }))
         // console.log(course);
     } 
 
-    const { title, description, courseDescription, courseTitle, materialsNeeded, estimatedTime, errors } = course;
-
-    console.log(courseTitle, courseDescription)
+    // console.log(course);
+    console.log(title, description)
 
     const handleUpdate = (e) => {
         e.preventDefault();
 
-        const courseValue = { description: courseDescription || description, title: courseTitle || title, materialsNeeded, estimatedTime };
-
-        courseValue.userId = authenticatedUser.user.id;
+        const courseValue = { description, title, materialsNeeded, estimatedTime };
 
             data.updateCourse(courseId, courseValue, authenticatedUser.user.emailAddress, authenticatedUser.password)
-                .then( err => {
-                    if (err.length) {
+                .then( error => {
+                    if (error.length) {
                         setCourse({
-                            errors: err,
-                            title: courseTitle || title,
-                            description: courseDescription || description,
-                            materialsNeeded: materialsNeeded,
-                            estimatedTime: estimatedTime
+                            errors: error,
+                            description: '',
+                            title: '',
+                            estimatedTime: '',
+                            materialsNeeded: ''
                         });
-                        console.log(err)
+                        console.log(error)
                     } else {
-                        history.push('/')
+                        history.push(`/courses/:${courseId}`)
                         console.log('Course Updated Successfully!')
                     }
                 })
                 .catch( err => {
-                    console.log(err);
-                    history.push('/error')
+                    // if (!description && !title) {
+                    //     setCourse({errors: ['Please provide a value for title & description']});
+                    // } else if (!description) {
+                    //     setCourse({ errors: ['Please provide a value for description'] });
+                    // } else if (!title) {
+                    //     setCourse({ errors: ['Please provide a value for title'] });
+                    // } else {}
+                    
+                    history.push('/error');
+                    console.log(err)
                 })         
     }
     
@@ -79,7 +92,7 @@ function CourseUpdate(props) {
             <h2>Update Course</h2>
 
             {
-                errors ?
+                errors?
                 <div className="validation--errors">
                     <h3>Validation Error</h3>
                     <ul>
@@ -95,15 +108,15 @@ function CourseUpdate(props) {
                 <div className="main--flex">
                     <div>
                         <label htmlFor="courseTitle">Course Title</label>
-                        <input type="text" id='courseTitle' name="courseTitle" onChange={updateCourse} defaultValue={title} />
+                        <input type="text" id='courseTitle' name="title" onChange={updateCourse} defaultValue={title} />
+                        <p>By {authenticatedUser.user.firstName} {authenticatedUser.user.lastName}</p>
                         <label htmlFor="courseDescription">Course Description</label>
-                        <textarea id='courseDescription' name="courseDescription" onChange={updateCourse} defaultValue={description} />
+                        <textarea id='courseDescription' name="description" onChange={updateCourse} defaultValue={description} />
                     </div>
                     <div>
                         <label htmlFor="estimatedTime">Estimated Time</label>
                         <input type="text" id='estimatedTime' name="estimatedTime" onChange={updateCourse} defaultValue={estimatedTime} />
                         <label htmlFor="materialsNeeded">Materials Needed</label>
-                        <p className='materials-info'>-Separate the different materials with *</p>
                         <textarea id='materialsNeeded' name="materialsNeeded" onChange={updateCourse} defaultValue={materialsNeeded} />
                     </div>
                 </div>
