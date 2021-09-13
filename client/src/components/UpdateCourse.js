@@ -52,23 +52,23 @@ function CourseUpdate(props) {
     } 
 
     // console.log(course);
-    // console.log(title, description)
+    console.log(title, description)
 
     const handleUpdate = (e) => {
         e.preventDefault();
 
             data.updateCourse(courseId, course, authenticatedUser.user.emailAddress, authenticatedUser.password)
-                .then( error => {
-                    console.log(error.message)
+                .then( (errors) => {
+                    console.log(errors)
 
-                    if (error.length) {
+                    if (errors.length) {
                         setCourse({
                             description: '',
                             title: '',
                             estimatedTime: '',
                             materialsNeeded: ''
                         });
-                        setErrors(error);
+                        setErrors(errors);
                     } else {
                         history.push(`/courses/:${courseId}`)
                         console.log('Course Updated Successfully!')
@@ -76,22 +76,23 @@ function CourseUpdate(props) {
                 })
                 .catch( err => {
                     if (!description && !title) {
+
                         setErrors(['Please provide a value for title & description']);
-                        setCourse({
-                            description: '',
-                            title: '',
-                        })
+
                     } else if (!description) {
+
                         setErrors(['Please provide a value for description']);
-                        setCourse({ description: ''})
+
                     } else if (!title) {
+
                         setErrors(['Please provide a value for title']);
-                        setCourse({ title: '' })
+                        
                     } else {
                         history.push('/error');
                     }               
+
                     // console.log(errors)
-                    // console.log(err)
+                    console.log(course)
                 })         
     }
     
