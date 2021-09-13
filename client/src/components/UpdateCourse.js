@@ -13,15 +13,16 @@ function CourseUpdate(props) {
         estimatedTime: '',
         title: '',
         materialsNeeded: '',
-        errors: []
     });
+
+    const [errors, setErrors] = useState([]);
 
     const courseId = props.match.params.id.slice(1);
     // console.log(courseId);
 
     // console.log(authenticatedUser.user.id, course.userId)
 
-    const { title, description, materialsNeeded, estimatedTime, errors } = course;
+    const { title, description, materialsNeeded, estimatedTime } = course;
 
     useEffect(() => {
         axios.get(`http://localhost:5000/api/courses/${courseId}`)
@@ -34,11 +35,13 @@ function CourseUpdate(props) {
                 if (err.message === 'Request failed with status code 404') {
                     history.push('/notFound');
                 } else {
-                    history.push('/error');
+                    // history.push('/error');
                     console.log(err)
                 } 
             })
     },[authenticatedUser.user.id, courseId, history, course.userId]);
+
+    console.log(course)
 
     const updateCourse = (e) => {
         setCourse(prevValue => ({
@@ -49,40 +52,46 @@ function CourseUpdate(props) {
     } 
 
     // console.log(course);
-    console.log(title, description)
+    // console.log(title, description)
 
     const handleUpdate = (e) => {
         e.preventDefault();
 
-        const courseValue = { description, title, materialsNeeded, estimatedTime };
-
-            data.updateCourse(courseId, courseValue, authenticatedUser.user.emailAddress, authenticatedUser.password)
+            data.updateCourse(courseId, course, authenticatedUser.user.emailAddress, authenticatedUser.password)
                 .then( error => {
+                    console.log(error.message)
+
                     if (error.length) {
                         setCourse({
-                            errors: error,
                             description: '',
                             title: '',
                             estimatedTime: '',
                             materialsNeeded: ''
                         });
-                        console.log(error)
+                        setErrors(error);
                     } else {
                         history.push(`/courses/:${courseId}`)
                         console.log('Course Updated Successfully!')
                     }
                 })
                 .catch( err => {
-                    // if (!description && !title) {
-                    //     setCourse({errors: ['Please provide a value for title & description']});
-                    // } else if (!description) {
-                    //     setCourse({ errors: ['Please provide a value for description'] });
-                    // } else if (!title) {
-                    //     setCourse({ errors: ['Please provide a value for title'] });
-                    // } else {}
-                    
-                    history.push('/error');
-                    console.log(err)
+                    if (!description && !title) {
+                        setErrors(['Please provide a value for title & description']);
+                        setCourse({
+                            description: '',
+                            title: '',
+                        })
+                    } else if (!description) {
+                        setErrors(['Please provide a value for description']);
+                        setCourse({ description: ''})
+                    } else if (!title) {
+                        setErrors(['Please provide a value for title']);
+                        setCourse({ title: '' })
+                    } else {
+                        history.push('/error');
+                    }               
+                    // console.log(errors)
+                    // console.log(err)
                 })         
     }
     
@@ -92,7 +101,7 @@ function CourseUpdate(props) {
             <h2>Update Course</h2>
 
             {
-                errors?
+                errors.length > 0?
                 <div className="validation--errors">
                     <h3>Validation Error</h3>
                     <ul>
