@@ -21,7 +21,7 @@ const CourseDelete = (props) => {
             .then(async(res) => {
                 const c = res.data;
                 await setCourse(c.course)
-                if (authenticatedUser.user.id !== c.course.userId) history.push('/UnAuthorized')
+                if (authenticatedUser.user.id !== c.course.userId) history.push('/forbidden')
             })
             .catch(err => {
                 if (err.message === 'Request failed with status code 404') {

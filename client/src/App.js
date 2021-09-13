@@ -27,7 +27,7 @@ function App() {
           <Route path='/signup' render={() => <SignUp />} />
           <Route path='/signin' render={() => <SignIn />} />
           <Route path='/signout' component={SignOut}/>
-          <Route path='/unAuthorized' component={UnAuth}/>
+          <Route path='/forbidden' component={UnAuth}/>
           <Route path='/courses/:id' render={(props) => <CourseDetails {...props} />} />
           <PrivateRoute path='/course/create' component={CreateCourse} />
           <PrivateRoute path='/course/:id/update' component={CourseUpdate} />
