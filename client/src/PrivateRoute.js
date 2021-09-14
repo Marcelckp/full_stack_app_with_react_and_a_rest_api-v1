@@ -4,6 +4,8 @@ import { Context } from './Context';
 
 const PrivateRoute = ({ component: Component, ...rest }) => {
     const { authenticatedUser } = useContext(Context);
+    //if (authenticatedUser) is true then allow then to access the route else redirect then to the sign in page/route
+    
     return (
             <Route 
                 {...rest}

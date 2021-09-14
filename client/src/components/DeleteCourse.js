@@ -7,21 +7,22 @@ const CourseDelete = (props) => {
 
     let history = useHistory()
     const [course, setCourse] = useState([]);
+
+    // retrieves the course id from the url param '/:id'
     const courseId = props.match.params.id.slice(1);
     // console.log(courseId);
 
     const { data, authenticatedUser } = useContext(Context)
 
-    // if (course) {
-    //     if (course === null) history.push('/notFound')
-    // }
-
+    //react hook
     useEffect(() => {
         axios.get(`http://localhost:5000/api/courses/${courseId}`)
             .then(async(res) => {
                 const c = res.data;
                 await setCourse(c.course)
-                if (authenticatedUser.user.id !== c.course.userId) history.push('/forbidden')
+                
+                // if the courses user id is not equal to the current authenticated users id the they are forbidden to perform actions on the course so they are sent to the /forbidden route
+                if (authenticatedUser.user.id !== c.course.userId) history.push('/forbidden');
             })
             .catch(err => {
                 if (err.message === 'Request failed with status code 404') {
@@ -39,8 +40,7 @@ const CourseDelete = (props) => {
 
     const handleDelete = (e) => {
         // e.preventDefault();
-        // console.log(course.userId) 
-        // console.log(authenticatedUser.user.id)
+        // console.log(course.userId)
 
             data.deleteCourse(courseId, authenticatedUser.user.emailAddress, authenticatedUser.password);
             history.push('/')

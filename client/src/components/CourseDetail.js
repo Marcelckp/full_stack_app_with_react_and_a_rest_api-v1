@@ -10,11 +10,14 @@ function CourseDetails(props) {
     const [course, setCourse] = useState([]);
     const { authenticatedUser } = useContext(Context)
 
+    //react hook
     useEffect(() => {
         // console.log(props.match.params.id.slice(1))
+        // fetch the course with axios to display on the screen
         axios.get(`http://localhost:5000/api/courses/${props.match.params.id.slice(1)}`)
             .then(async(res) => {
                 const co = res.data;
+                //sets the course state (react hook to update the course state)
                 await setCourse(co.course)
                 // console.log(co)
             })
@@ -35,6 +38,9 @@ function CourseDetails(props) {
         <>
             <div className="actions--bar">
                 <div className="wrap">
+
+                {/* checks if authenticated user is true and the auth user is equal to the current courses userId and if that condition is false the buttons to update and delete the course will be hidden /hence null, and if the condition is true the update and delete buttons will be shown */}
+
                 {
                     authenticatedUser && authenticatedUser.user.id === course.userId
                     ?

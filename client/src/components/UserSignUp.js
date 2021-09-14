@@ -1,12 +1,13 @@
 import React, { useState, useContext } from 'react';
 import { Context } from '../Context';
-import { useHistory, Redirect } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 
 function SignUp() {
 
     let history = useHistory();
     const { data, actions } = useContext(Context);
 
+    //react hook for setting the user state
     const [user, setUser] = useState({
         firstName:'',
         lastName:'',
@@ -15,6 +16,7 @@ function SignUp() {
         errors:[]
     });
 
+    //deconstruct variables
     const {emailAddress, password, firstName, lastName, errors} = user;
 
     const updateVal = (e) => {
@@ -26,9 +28,13 @@ function SignUp() {
 
 
     const submit = (e) => {
+
+        //creates account obj
         const account = {firstName, lastName, emailAddress, password}
         e.preventDefault();
         console.log(account)
+
+        //create user account with the createUser function from context using the react hook useContext(Context) 
         data.createUser(account)
             .then(err => {
                 if (err.length > 0) {
@@ -47,7 +53,7 @@ function SignUp() {
             })
             .catch(error => {
                 console.log(error);
-                return <Redirect to='/error' />
+                history.push('/error');
             })
     }
 

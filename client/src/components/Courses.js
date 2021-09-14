@@ -4,6 +4,7 @@ import React, {useEffect, useState} from 'react'
 function Home() {
     const [courses, setCourses] = useState([]);
 
+    //react hook
     useEffect(() => {
         axios.get('http://localhost:5000/api/courses')
             .then(res => {

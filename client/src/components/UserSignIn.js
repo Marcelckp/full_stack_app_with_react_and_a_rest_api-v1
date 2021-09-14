@@ -1,19 +1,22 @@
 import React, {useContext, useState} from 'react'
 import { Context } from '../Context'
-import { useHistory, Redirect } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 
 function SignIn(props) {
     let history = useHistory();
     const { actions, data } = useContext(Context);
 
+    //react hook to set the account obj
     const [account, setAccount] = useState({
         emailAddress: '',
         password: '',
         errors:[]
     });
 
+    //deconstruct variables
     const { emailAddress, password, errors } = account;
 
+    //update val function to be used on an event in the input fields to update the values in the account state as the user types
     const updateVal = (e) => {
         setAccount(prevVal => ({
             ...prevVal,
@@ -28,6 +31,13 @@ function SignIn(props) {
         const userVal =  data.getUser(emailAddress, password)
         console.log(userVal)
 
+        //sets the authenticated user context so that the application allows access to certain private Routes
+        /**
+         * if user received from the context actions.signIn function then set errors in account state to 'sign-in was unsuccessful' 
+         * so that the users know the information they entered was wrong
+         * else 
+         * send if the func successfully fetched a user and 'signed-In' then redirect them to the pervious page they were on using history.goBack();
+        */
         actions.signIn(emailAddress, password)
             .then((user) => {
                 console.log(user)
@@ -44,7 +54,7 @@ function SignIn(props) {
             })
             .catch((err) => {
                 console.log(err);
-                return <Redirect to='/error' />
+                history.push('/error');
             })
     
     }
@@ -52,6 +62,7 @@ function SignIn(props) {
     return (
         <div className='form--centered'>
             <h2>Sign In</h2>
+            {/* if errors greater then 0 display the error messages else null */}
             {
                 errors.length > 0 ?
                 <div className='validation--errors'><h3>{errors}</h3></div>

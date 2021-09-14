@@ -6,8 +6,11 @@ import { useHistory } from 'react-router-dom';
 function CourseUpdate(props) {
 
     let history = useHistory();
+    
+    //uses the useContext hook to use the function stored in context to use all over the app
     let { data, authenticatedUser } = useContext(Context);
 
+    //react hook to store the state of the current clicked on course
     const [course, setCourse] = useState({
         description: '',
         estimatedTime: '',
@@ -22,8 +25,10 @@ function CourseUpdate(props) {
 
     // console.log(authenticatedUser.user.id, course.userId)
 
+    //deconstruct variables
     const { title, description, materialsNeeded, estimatedTime } = course;
 
+    //react hook
     useEffect(() => {
         axios.get(`http://localhost:5000/api/courses/${courseId}`)
             .then((res) => {
@@ -100,7 +105,7 @@ function CourseUpdate(props) {
     return ( 
         <div className='wrap'>
             <h2>Update Course</h2>
-
+            {/* if errors array length > 0 then display errors else null/ do nothing */}
             {
                 errors.length > 0?
                 <div className="validation--errors">

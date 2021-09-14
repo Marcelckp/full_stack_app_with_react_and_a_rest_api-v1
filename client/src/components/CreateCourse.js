@@ -6,6 +6,7 @@ const CreateCourse = () => {
     let history = useHistory();
     let { data, authenticatedUser } = useContext(Context);
 
+    //react hook to store state 
     const [course, setCourse] = useState({
         courseDescription: '',
         estimatedTime: '',
@@ -14,6 +15,7 @@ const CreateCourse = () => {
         errors: []
     });
 
+    //deconstruct variables
     const { courseDescription, courseTitle, materialsNeeded, estimatedTime, errors } = course
 
     const updateVal = (e) => {
@@ -27,8 +29,11 @@ const CreateCourse = () => {
     
     const handleSubmit = (e) => {
         e.preventDefault();
+
+        //creates the course obj to create in the data base 
         const courseVal = {description: courseDescription, title: courseTitle, materialsNeeded, estimatedTime, userId: authenticatedUser.user.id};
         
+        //sets the courses userId to the current signed in users id 
         courseVal.userId = authenticatedUser.user.id;
         
         // console.log(courseVal, authenticatedUser.user.emailAddress, authenticatedUser.password)
@@ -36,6 +41,7 @@ const CreateCourse = () => {
         data.createCourse(courseVal, authenticatedUser.user.emailAddress, authenticatedUser.password)
             .then( error => {
                 if (error.length) {
+                    //sets errors array to the errors received from createCourse, and resets the value of the other input routes so the users don't get confused when creating a new course 
                     setCourse({
                         errors: error,
                         courseDescription: '',
@@ -59,6 +65,8 @@ const CreateCourse = () => {
     return (
         <div className="wrap">
             <h2>Create Course</h2>
+
+            {/* loop over errors state var to check if the condition is met and if it is then display the errors to the page by mapping over the errors array stored in the state object */}
 
             {
                 errors.length > 0
