@@ -5,6 +5,7 @@ import { useHistory } from 'react-router-dom';
 function SignIn(props) {
     let history = useHistory();
     const { actions, data } = useContext(Context);
+    const { from } = history.location.state || { from: '/' }
 
     //react hook to set the account obj
     const [account, setAccount] = useState({
@@ -48,7 +49,7 @@ function SignIn(props) {
                         password: ''
                     })
                 } else {
-                    history.goBack();
+                    history.push(from);
                     console.log('You\'ve signed in successfully');
                 }
             })
