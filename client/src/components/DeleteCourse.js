@@ -25,7 +25,7 @@ const CourseDelete = (props) => {
             })
             .catch(err => {
                 if (err.message === 'Request failed with status code 404') {
-                    history.push('/notFound');
+                    history.push('/notfound');
                 } else {
                     history.push('/error');
                     console.log(err)

@@ -4,7 +4,8 @@ import { Context } from './Context';
 
 const PrivateRoute = ({ component: Component, ...rest }) => {
     const { authenticatedUser } = useContext(Context);
-    return (<Route 
+    return (
+            <Route 
                 {...rest}
                 render={props => authenticatedUser ? (
                     <Component {...props} />

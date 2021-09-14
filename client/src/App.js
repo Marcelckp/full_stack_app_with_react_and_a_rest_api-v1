@@ -32,7 +32,8 @@ function App() {
           <PrivateRoute path='/course/create' component={CreateCourse} />
           <PrivateRoute path='/course/:id/update' component={CourseUpdate} />
           <PrivateRoute path='/course/:id/delete' component={CourseDelete} />
-          <Route path='/error' component={Error}/>
+          <Route path='/error' component={Error} />
+          <Route path='/notfound' component={NotFound} />
           <Route component={NotFound} />
         </Switch>
       </div>

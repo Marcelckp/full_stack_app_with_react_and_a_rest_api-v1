@@ -33,9 +33,9 @@ function CourseUpdate(props) {
             })
             .catch(err => {
                 if (err.message === 'Request failed with status code 404') {
-                    history.push('/notFound');
+                    history.push('/notfound');
                 } else {
-                    // history.push('/error');
+                    history.push('/error');
                     console.log(err)
                 } 
             })
@@ -118,16 +118,16 @@ function CourseUpdate(props) {
                 <div className="main--flex">
                     <div>
                         <label htmlFor="courseTitle">Course Title</label>
-                        <input type="text" id='courseTitle' name="title" onChange={updateCourse} defaultValue={title} />
+                        <input type="text" id='courseTitle' name="title" onInput={updateCourse} defaultValue={title} />
                         <p>By {authenticatedUser.user.firstName} {authenticatedUser.user.lastName}</p>
                         <label htmlFor="courseDescription">Course Description</label>
-                        <textarea id='courseDescription' name="description" onChange={updateCourse} defaultValue={description} />
+                        <textarea id='courseDescription' name="description" onInput={updateCourse} defaultValue={description} />
                     </div>
                     <div>
                         <label htmlFor="estimatedTime">Estimated Time</label>
-                        <input type="text" id='estimatedTime' name="estimatedTime" onChange={updateCourse} defaultValue={estimatedTime} />
+                        <input type="text" id='estimatedTime' name="estimatedTime" onInput={updateCourse} defaultValue={estimatedTime} />
                         <label htmlFor="materialsNeeded">Materials Needed</label>
-                        <textarea id='materialsNeeded' name="materialsNeeded" onChange={updateCourse} defaultValue={materialsNeeded} />
+                        <textarea id='materialsNeeded' name="materialsNeeded" onInput={updateCourse} defaultValue={materialsNeeded} />
                     </div>
                 </div>
                 <button className="button" type='submit'>Update Course</button>
