@@ -39,8 +39,8 @@ function CourseDetails(props) {
                     authenticatedUser && authenticatedUser.user.id === course.userId
                     ?
                     <>
-                        <a href={`/course/:${props.match.params.id.slice(1)}/update`} className="button">Update Course</a>
-                        <a href={`/course/:${props.match.params.id.slice(1)}/delete`} className="button">Delete Course</a>
+                        <a href={`/courses/:${props.match.params.id.slice(1)}/update`} className="button">Update Course</a>
+                        <a href={`/courses/:${props.match.params.id.slice(1)}/delete`} className="button">Delete Course</a>
                     </>
                     : 
                     null
