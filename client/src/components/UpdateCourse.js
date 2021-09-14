@@ -36,7 +36,7 @@ function CourseUpdate(props) {
                     history.push('/notfound');
                 } else {
                     history.push('/error');
-                    console.log(err)
+                    console.log(err);
                 } 
             })
     },[authenticatedUser.user.id, courseId, history, course.userId]);
