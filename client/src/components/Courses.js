@@ -1,7 +1,9 @@
-import axios from 'axios'
-import React, {useEffect, useState} from 'react'
+import axios from 'axios';
+import React, {useEffect, useState} from 'react';
+import { useHistory } from 'react-router-dom';
 
 function Home() {
+    let history = useHistory()
     const [courses, setCourses] = useState([]);
 
     //react hook
@@ -13,6 +15,7 @@ function Home() {
             })
             .catch(err => {
                 console.log(err);
+                history.push('/error')
             })
     }, []);
 

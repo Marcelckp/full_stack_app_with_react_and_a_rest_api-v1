@@ -136,7 +136,7 @@ function CourseUpdate(props) {
                     </div>
                 </div>
                 <button className="button" type='submit'>Update Course</button>
-                <a href="/" className="button button-secondary">Cancel</a>
+                <a href={`/courses/:${courseId}`} className="button button-secondary">Cancel</a>
             </form>
         </div>
     )
